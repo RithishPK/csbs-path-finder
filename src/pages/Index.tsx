@@ -6,6 +6,7 @@ import DecisionOutput from "@/components/DecisionOutput";
 import WhatIfSimulator from "@/components/WhatIfSimulator";
 import ProgressAnalysis from "@/components/ProgressAnalysis";
 import MistakeInsights from "@/components/MistakeInsights";
+import Chatbot from "@/components/Chatbot";
 
 const Index = () => {
   const [currentSection, setCurrentSection] = useState("home");
@@ -61,6 +62,7 @@ const Index = () => {
         showNav={hasStarted}
       />
       <main className="pb-8">{renderContent()}</main>
+      <Chatbot />
     </div>
   );
 };
