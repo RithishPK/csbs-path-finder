@@ -1,14 +1,21 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { X, Send, BookOpen, Sparkles, Loader2 } from 'lucide-react';
+import { X, Send, BookOpen, Sparkles, Loader2, Upload, FileText, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 interface Message {
   id: string;
   content: string;
   role: 'user' | 'assistant';
   timestamp: Date;
+}
+
+interface UploadedPDF {
+  name: string;
+  content: string;
+  url: string;
 }
 
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/syllabus-chat`;
@@ -20,6 +27,8 @@ I'm your academic guide powered by AI, with knowledge grounded in:
 - 🎓 First-batch senior experiences
 - 📝 Exam patterns & preparation tips
 - 💼 Placement guidance
+
+**📄 NEW: Upload your own syllabus PDFs for custom grounding!**
 
 **Ask me about:**
 • Subject details & what to study
@@ -48,8 +57,12 @@ const SyllabusAIChat = () => {
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [uploadedPDFs, setUploadedPDFs] = useState<UploadedPDF[]>([]);
+  const [isUploading, setIsUploading] = useState(false);
+  const [showUploadSection, setShowUploadSection] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
   const scrollToBottom = useCallback(() => {
@@ -60,14 +73,158 @@ const SyllabusAIChat = () => {
     scrollToBottom();
   }, [messages, scrollToBottom]);
 
+  const extractTextFromPDF = async (file: File): Promise<string> => {
+    // For now, we'll use a simple text extraction approach
+    // In a production environment, you'd use a PDF parsing library or service
+    const arrayBuffer = await file.arrayBuffer();
+    const uint8Array = new Uint8Array(arrayBuffer);
+    
+    // Basic PDF text extraction - looks for text between stream markers
+    let text = '';
+    const decoder = new TextDecoder('utf-8', { fatal: false });
+    const rawText = decoder.decode(uint8Array);
+    
+    // Extract readable text content (simplified approach)
+    // This extracts text that appears between parentheses in PDF format
+    const textMatches = rawText.match(/\(([^)]+)\)/g);
+    if (textMatches) {
+      text = textMatches
+        .map(match => match.slice(1, -1))
+        .filter(t => t.length > 2 && /[a-zA-Z]/.test(t))
+        .join(' ');
+    }
+    
+    // Also try to extract plain text sections
+    const plainTextSections = rawText.match(/BT[\s\S]*?ET/g);
+    if (plainTextSections) {
+      for (const section of plainTextSections) {
+        const sectionMatches = section.match(/\(([^)]+)\)/g);
+        if (sectionMatches) {
+          text += ' ' + sectionMatches
+            .map(match => match.slice(1, -1))
+            .filter(t => t.length > 2 && /[a-zA-Z]/.test(t))
+            .join(' ');
+        }
+      }
+    }
+
+    // Clean up the text
+    text = text
+      .replace(/\\n/g, '\n')
+      .replace(/\\r/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    // If we couldn't extract much text, provide file info
+    if (text.length < 100) {
+      text = `[PDF Document: ${file.name}] - Note: Limited text extraction available. The AI will use any available content for context.`;
+    }
+
+    return text;
+  };
+
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
+
+    setIsUploading(true);
+
+    try {
+      for (const file of Array.from(files)) {
+        if (file.type !== 'application/pdf') {
+          toast({
+            title: 'Invalid file type',
+            description: 'Please upload only PDF files',
+            variant: 'destructive',
+          });
+          continue;
+        }
+
+        if (file.size > 10 * 1024 * 1024) {
+          toast({
+            title: 'File too large',
+            description: 'Maximum file size is 10MB',
+            variant: 'destructive',
+          });
+          continue;
+        }
+
+        // Extract text from PDF
+        const extractedText = await extractTextFromPDF(file);
+
+        // Upload to Supabase Storage
+        const fileName = `${Date.now()}-${file.name}`;
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('syllabus-pdfs')
+          .upload(fileName, file);
+
+        if (uploadError) {
+          console.error('Upload error:', uploadError);
+          toast({
+            title: 'Upload failed',
+            description: uploadError.message,
+            variant: 'destructive',
+          });
+          continue;
+        }
+
+        // Get public URL
+        const { data: { publicUrl } } = supabase.storage
+          .from('syllabus-pdfs')
+          .getPublicUrl(fileName);
+
+        setUploadedPDFs(prev => [...prev, {
+          name: file.name,
+          content: extractedText,
+          url: publicUrl,
+        }]);
+
+        toast({
+          title: 'PDF uploaded successfully',
+          description: `${file.name} is now part of the knowledge base`,
+        });
+      }
+    } catch (error) {
+      console.error('File upload error:', error);
+      toast({
+        title: 'Upload error',
+        description: 'Failed to process the PDF file',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsUploading(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
+
+  const removePDF = (index: number) => {
+    setUploadedPDFs(prev => prev.filter((_, i) => i !== index));
+    toast({
+      title: 'PDF removed',
+      description: 'The document has been removed from the knowledge base',
+    });
+  };
+
+  const getCustomSyllabusContent = () => {
+    if (uploadedPDFs.length === 0) return undefined;
+    return uploadedPDFs.map(pdf => `### ${pdf.name}\n${pdf.content}`).join('\n\n');
+  };
+
   const streamChat = async (userMessages: { role: string; content: string }[]) => {
+    const customContent = getCustomSyllabusContent();
+    
     const resp = await fetch(CHAT_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
       },
-      body: JSON.stringify({ messages: userMessages }),
+      body: JSON.stringify({ 
+        messages: userMessages,
+        customSyllabusContent: customContent,
+      }),
     });
 
     if (!resp.ok) {
@@ -228,6 +385,16 @@ const SyllabusAIChat = () => {
 
   return (
     <>
+      {/* Hidden file input */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".pdf"
+        multiple
+        onChange={handleFileUpload}
+        className="hidden"
+      />
+
       {/* Floating Chat Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
@@ -261,7 +428,77 @@ const SyllabusAIChat = () => {
                 Powered by Gemini • Grounded in CSBS curriculum
               </p>
             </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-9 w-9 text-primary-foreground hover:bg-primary-foreground/20"
+              onClick={() => setShowUploadSection(!showUploadSection)}
+              title="Upload PDF"
+            >
+              <Upload className="w-5 h-5" />
+            </Button>
           </div>
+
+          {/* Upload Section */}
+          {showUploadSection && (
+            <div className="px-4 py-3 bg-secondary/50 border-b border-border shrink-0">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-foreground">📄 Custom Syllabus PDFs</span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={isUploading}
+                  className="h-7 text-xs"
+                >
+                  {isUploading ? (
+                    <>
+                      <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                      Uploading...
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="w-3 h-3 mr-1" />
+                      Add PDF
+                    </>
+                  )}
+                </Button>
+              </div>
+              
+              {uploadedPDFs.length === 0 ? (
+                <p className="text-xs text-muted-foreground">
+                  No PDFs uploaded. Add your syllabus documents for custom AI grounding.
+                </p>
+              ) : (
+                <div className="space-y-1.5 max-h-24 overflow-y-auto">
+                  {uploadedPDFs.map((pdf, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between bg-card rounded-lg px-2.5 py-1.5 text-xs"
+                    >
+                      <div className="flex items-center gap-2 min-w-0">
+                        <FileText className="w-3.5 h-3.5 text-primary shrink-0" />
+                        <span className="truncate">{pdf.name}</span>
+                      </div>
+                      <button
+                        onClick={() => removePDF(index)}
+                        className="p-1 hover:bg-destructive/10 rounded text-destructive shrink-0"
+                        title="Remove PDF"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+              
+              {uploadedPDFs.length > 0 && (
+                <p className="text-[10px] text-muted-foreground mt-2">
+                  ✅ AI will use these documents for context-aware responses
+                </p>
+              )}
+            </div>
+          )}
 
           {/* Messages Area */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-secondary/30">
@@ -340,7 +577,7 @@ const SyllabusAIChat = () => {
               </Button>
             </div>
             <p className="text-[10px] text-muted-foreground text-center mt-2">
-              📚 Responses grounded in official syllabus • No hallucinations
+              📚 Responses grounded in official syllabus{uploadedPDFs.length > 0 ? ` + ${uploadedPDFs.length} uploaded PDF${uploadedPDFs.length > 1 ? 's' : ''}` : ''} • No hallucinations
             </p>
           </div>
         </div>
