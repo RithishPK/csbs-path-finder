@@ -1,0 +1,4 @@
+project_id = "mroisithxswgvuvlfolg"
+
+[functions.syllabus-chat]
+verify_jwt = false
