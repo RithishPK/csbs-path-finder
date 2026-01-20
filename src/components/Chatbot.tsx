@@ -280,10 +280,10 @@ const Chatbot = () => {
 
   return (
     <>
-      {/* Floating Chat Button */}
+      {/* Floating Chat Button - positioned left side */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-primary text-primary-foreground rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center hover:scale-105"
+        className="fixed bottom-6 left-6 z-50 w-14 h-14 bg-primary text-primary-foreground rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center hover:scale-105"
         aria-label={isOpen ? "Close chat" : "Open chat"}
       >
         {isOpen ? (
@@ -293,9 +293,9 @@ const Chatbot = () => {
         )}
       </button>
 
-      {/* Chat Window */}
+      {/* Chat Window - positioned left side */}
       {isOpen && (
-        <div className="fixed bottom-24 right-6 z-50 w-[360px] max-w-[calc(100vw-3rem)] bg-card border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-fade-in">
+        <div className="fixed bottom-24 left-6 z-50 w-[360px] max-w-[calc(100vw-3rem)] bg-card border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-fade-in">
           {/* Header */}
           <div className="bg-primary text-primary-foreground px-4 py-3 flex items-center gap-3">
             <div className="w-10 h-10 bg-primary-foreground/20 rounded-full flex items-center justify-center">
