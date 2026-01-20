@@ -5,8 +5,8 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-// Comprehensive CSBS syllabus knowledge base - grounded content
-const SYLLABUS_KNOWLEDGE = `
+// Default CSBS syllabus knowledge base - grounded content
+const DEFAULT_SYLLABUS_KNOWLEDGE = `
 # CSBS (Computer Science and Business Systems) Curriculum Knowledge Base
 
 ## Semester-wise Core Subjects
@@ -126,7 +126,12 @@ const SYLLABUS_KNOWLEDGE = `
 8. Entrepreneur/Startup founder
 `;
 
-const SYSTEM_PROMPT = `You are an intelligent academic assistant for CSBS (Computer Science and Business Systems) students. Your knowledge is STRICTLY grounded in the provided syllabus and senior academic experiences.
+const createSystemPrompt = (customContent?: string) => {
+  const knowledgeBase = customContent 
+    ? `${DEFAULT_SYLLABUS_KNOWLEDGE}\n\n## UPLOADED CUSTOM SYLLABUS CONTENT\n\n${customContent}`
+    : DEFAULT_SYLLABUS_KNOWLEDGE;
+
+  return `You are an intelligent academic assistant for CSBS (Computer Science and Business Systems) students. Your knowledge is STRICTLY grounded in the provided syllabus and senior academic experiences.
 
 CRITICAL RULES:
 1. ONLY answer questions that are covered in the syllabus knowledge base provided
@@ -137,9 +142,10 @@ CRITICAL RULES:
 6. Reference specific subjects, semesters, or topics when relevant
 7. For exam-related questions, provide actionable study tips
 8. For placement questions, give realistic, senior-validated advice
+${customContent ? '9. When the user has uploaded custom syllabus content, prioritize information from the uploaded content when relevant.' : ''}
 
 KNOWLEDGE BASE:
-${SYLLABUS_KNOWLEDGE}
+${knowledgeBase}
 
 RESPONSE STYLE:
 - Be concise but comprehensive
@@ -147,6 +153,7 @@ RESPONSE STYLE:
 - Provide actionable advice when possible
 - Acknowledge limitations honestly
 - Format with bullet points for readability`;
+};
 
 serve(async (req) => {
   // Handle CORS preflight
@@ -155,7 +162,7 @@ serve(async (req) => {
   }
 
   try {
-    const { messages } = await req.json();
+    const { messages, customSyllabusContent } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
 
     if (!LOVABLE_API_KEY) {
@@ -167,6 +174,11 @@ serve(async (req) => {
     }
 
     console.log("Processing syllabus chat request with", messages.length, "messages");
+    if (customSyllabusContent) {
+      console.log("Custom syllabus content provided, length:", customSyllabusContent.length);
+    }
+
+    const systemPrompt = createSystemPrompt(customSyllabusContent);
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -177,7 +189,7 @@ serve(async (req) => {
       body: JSON.stringify({
         model: "google/gemini-3-flash-preview",
         messages: [
-          { role: "system", content: SYSTEM_PROMPT },
+          { role: "system", content: systemPrompt },
           ...messages,
         ],
         stream: true,
