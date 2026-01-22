@@ -1,4 +1,4 @@
-import { Home, FileText, Target, FlaskConical, BarChart3, MessageSquareWarning } from "lucide-react";
+import { Home, FileText, Target, FlaskConical, BarChart3, MessageSquareWarning, GraduationCap } from "lucide-react";
 
 interface NavigationProps {
   currentSection: string;
@@ -13,6 +13,7 @@ const navItems = [
   { id: "simulator", label: "Simulator", icon: FlaskConical },
   { id: "progress", label: "Progress", icon: BarChart3 },
   { id: "mistakes", label: "Insights", icon: MessageSquareWarning },
+  { id: "syllabus-ai", label: "Syllabus AI", icon: GraduationCap },
 ];
 
 const Navigation = ({ currentSection, onNavigate, showNav }: NavigationProps) => {

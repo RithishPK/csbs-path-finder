@@ -7,7 +7,7 @@ import WhatIfSimulator from "@/components/WhatIfSimulator";
 import ProgressAnalysis from "@/components/ProgressAnalysis";
 import MistakeInsights from "@/components/MistakeInsights";
 import Chatbot from "@/components/Chatbot";
-import SyllabusAIChat from "@/components/SyllabusAIChat";
+import SyllabusAISection from "@/components/SyllabusAISection";
 
 const Index = () => {
   const [currentSection, setCurrentSection] = useState("home");
@@ -50,6 +50,8 @@ const Index = () => {
         return <ProgressAnalysis />;
       case "mistakes":
         return <MistakeInsights />;
+      case "syllabus-ai":
+        return <SyllabusAISection />;
       default:
         return <LandingPage onStart={handleStart} />;
     }
@@ -65,8 +67,6 @@ const Index = () => {
       <main className="pb-8">{renderContent()}</main>
       {/* Legacy FAQ Chatbot - bottom left */}
       <Chatbot />
-      {/* AI-powered Syllabus Chat - bottom right */}
-      <SyllabusAIChat />
     </div>
   );
 };
