@@ -1,42 +1,43 @@
-# Welcome to My Project
+# Welcome to My Project 
+"Institutional Knowledge Preservation & Decision-Support System"
 
-## Project info
+Project Info
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+This project is a web-based Institutional Knowledge Preservation & Decision-Support System designed to support new-age academic degree programs that lack historical guidance and structured institutional memory.
 
-## How can I edit this code?
+Newly introduced programs such as Computer Science & Business Systems (CSBS) face uncertainty for incoming students due to the absence of senior-batch insights, semester-wise difficulty mapping, and proven academic or placement strategies.
 
-There are several ways of editing your application.
+Built from the perspective of an early-batch CSBS student, this system captures senior student experiences, structures them into reusable institutional knowledge, and presents them through an intuitive navigation-based interface to guide junior students in making informed academic decisions.
 
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
+CSBS is used as the reference implementation, but the system is designed to be adaptable to any newly launched or interdisciplinary degree program.
 Follow these steps:
 
-```sh
+How Can I Edit This Code?
+There are several ways to edit and contribute to this application.
+Use Your Preferred IDE
+You can work locally using any IDE of your choice by cloning the repository and pushing changes to GitHub.
+
+Prerequisites
+Node.js (v18+ recommended)
+npm
+Optional: nvm for managing Node versions
+```
+Follow these steps:
 # Step 1: Clone the repository using the project's Git URL.
 git clone <YOUR_GIT_URL>
-
 # Step 2: Navigate to the project directory.
 cd <YOUR_PROJECT_NAME>
-
 # Step 3: Install the necessary dependencies.
 npm i
-
 # Step 4: Start the development server with auto-reloading and an instant preview.
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Edit a File Directly in GitHub
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Navigate to the desired file(s) in the repository.
+Click the Edit button (pencil icon) at the top right of the file view.
+Make your changes and commit them directly to the repository.
 
 **Use GitHub Codespaces**
 
@@ -58,12 +59,17 @@ This project is built with:
 
 ## How can I deploy this project?
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+The application can be deployed using any modern frontend hosting platform, such as:
+Vercel
+Netlify
+Firebase Hosting
+Cloudflare Pages
+To generate a production build:
+npm run build
+Upload the generated build output to your chosen hosting provider.
 
 ## Can I connect a custom domain to my Lovable project?
 
-Yes, you can!
+Yes.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Custom domains can be configured through the domain management settings of the chosen hosting platform after deployment.
