@@ -15,7 +15,7 @@
 <p align="center">
   <img src="https://readme-typing-svg.herokuapp.com?font=Poppins&size=28&duration=3500&center=true&vCenter=true&width=900&lines=AI+Decision+Support+System;Institutional+Knowledge+Preservation;Built+for+CSBS+Students;Powered+by+Google+Gemini" />
 </p>
-## 📌 Overview
+📌 Overview
 
 **CSBS PathFinder** is an AI-powered Decision Support System built to help students of **Computer Science & Business Systems (CSBS)** make informed academic and career decisions.
 
