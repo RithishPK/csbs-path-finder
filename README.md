@@ -290,6 +290,9 @@ If you found this project useful,
 
 <p align="center">
 
+👤 Author
+Rithish PK — @RithishPK
+
 ### 🚀 Empowering CSBS Students Through AI & Institutional Knowledge
 
 *"Making better decisions today for a stronger career tomorrow."*
