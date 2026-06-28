@@ -1,75 +1,306 @@
-# Welcome to My Project 
-"Institutional Knowledge Preservation & Decision-Support System"
+# 🎓 CSBS PathFinder
 
-Project Info
+### *Institutional Knowledge Preservation & AI Decision Support System for New-Age Degree Programs*
 
-This project is a web-based Institutional Knowledge Preservation & Decision-Support System designed to support new-age academic degree programs that lack historical guidance and structured institutional memory.
+<p align="center">
 
-Newly introduced programs such as Computer Science & Business Systems (CSBS) face uncertainty for incoming students due to the absence of senior-batch insights, semester-wise difficulty mapping, and proven academic or placement strategies.
+![Python](https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge\&logo=python)
+![Gemini](https://img.shields.io/badge/Google-Gemini_API-4285F4?style=for-the-badge\&logo=google)
+![AI](https://img.shields.io/badge/AI-Powered-success?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-orange?style=for-the-badge)
 
-Built from the perspective of an early-batch CSBS student, this system captures senior student experiences, structures them into reusable institutional knowledge, and presents them through an intuitive navigation-based interface to guide junior students in making informed academic decisions.
+</p>
 
-CSBS is used as the reference implementation, but the system is designed to be adaptable to any newly launched or interdisciplinary degree program.
-Follow these steps:
+---
 
-How Can I Edit This Code?
-There are several ways to edit and contribute to this application.
-Use Your Preferred IDE
-You can work locally using any IDE of your choice by cloning the repository and pushing changes to GitHub.
+## 📌 Overview
 
-Prerequisites
-Node.js (v18+ recommended)
-npm
-Optional: nvm for managing Node versions
+**CSBS PathFinder** is an AI-powered Decision Support System built to help students of **Computer Science & Business Systems (CSBS)** make informed academic and career decisions.
+
+Unlike generic career guidance platforms, PathFinder preserves institutional knowledge by learning from senior experiences, placement trends, syllabus structure, and student profiles to provide **personalized recommendations** instead of generic advice.
+
+> **"Helping juniors make smarter decisions by learning from the experiences of seniors."**
+
+---
+
+# 🚨 Problem Statement
+
+Students in modern interdisciplinary programs like **CSBS** often struggle with:
+
+* ❌ No structured mentorship
+* ❌ Scattered career advice
+* ❌ Lack of historical placement insights
+* ❌ Difficulty balancing CGPA, skills, internships & placements
+* ❌ Repeating mistakes made by previous batches
+
+Traditional chatbots answer questions.
+
+**PathFinder helps students make decisions.**
+
+---
+
+# 💡 Our Solution
+
+CSBS PathFinder combines
+
+* 🎯 Student Profile Analysis
+* 🤖 Google Gemini AI
+* 📚 Institutional Knowledge
+* 🎓 Senior Experiences
+* 📊 Placement Trends
+* 📖 Syllabus Intelligence
+
+to generate personalized academic and career guidance.
+
+Instead of simply answering queries, the system reasons through possible choices and recommends the best path.
+
+---
+
+# ✨ Features
+
+## 👤 Student Profile Analysis
+
+* Semester
+* CGPA
+* Skills
+* Interests
+* Career Goal
+* Internship Status
+
+---
+
+## 🧠 Personalized Career Guidance
+
+Receive AI-generated recommendations based on:
+
+* Academic performance
+* Career interests
+* Placement goals
+* Skill profile
+
+---
+
+## 🎓 Senior Experience Integration
+
+Learn from previous CSBS students.
+
+The system stores valuable institutional knowledge including:
+
+* Placement strategies
+* Internship journeys
+* Successful roadmaps
+* Lessons learned
+
+---
+
+## ⚠ Anonymous Mistake Insights
+
+Avoid repeating common mistakes.
+
+Examples include
+
+* Poor project selection
+* Internship delays
+* Placement preparation errors
+* Time management issues
+
+---
+
+## 🔮 What-If Decision Simulator
+
+Simulate outcomes such as
+
+> "What happens if my CGPA becomes 8.5?"
+
+> "Should I focus on AI or Cybersecurity?"
+
+> "What if I skip internships?"
+
+---
+
+## 📈 Progress & Gap Analysis
+
+Identify
+
+* Missing skills
+* Placement readiness
+* Improvement areas
+* Learning roadmap
+
+---
+
+## 📖 AI Academic Assistant
+
+Provides syllabus-grounded academic support instead of generic AI responses.
+
+---
+
+## 💬 Mentor-Style Chat
+
+Ask questions naturally and receive responses inspired by senior experiences.
+
+---
+
+## 🎯 Placement Recommendations
+
+Preparation strategies based on
+
+* Target companies
+* Required skills
+* Previous placement trends
+
+---
+
+# 🏗 Architecture
+
 ```
-Follow these steps:
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-# Step 3: Install the necessary dependencies.
-npm i
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+Student
+   │
+   ▼
+Student Profile
+   │
+   ▼
+Knowledge Base
+(Syllabus + Senior Experiences + Placement Data)
+   │
+   ▼
+Google Gemini AI
+   │
+   ▼
+Reasoning Engine
+   │
+   ▼
+Personalized Recommendations
 ```
 
-Edit a File Directly in GitHub
+---
 
-Navigate to the desired file(s) in the repository.
-Click the Edit button (pencil icon) at the top right of the file view.
-Make your changes and commit them directly to the repository.
+# 🛠 Tech Stack
 
-**Use GitHub Codespaces**
+| Category        | Technologies                       |
+| --------------- | ---------------------------------- |
+| Language        | Python                             |
+| AI              | Google Gemini API                  |
+| Backend         | Python                             |
+| Frontend        | HTML • CSS • JavaScript            |
+| Database        | Structured Institutional Knowledge |
+| Version Control | Git & GitHub                       |
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+---
 
-## What technologies are used for this project?
+# 🌟 Why This Project?
 
-This project is built with:
+Unlike traditional career guidance platforms,
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+✅ Degree-specific recommendations
 
-## How can I deploy this project?
+✅ Institutional knowledge preservation
 
-The application can be deployed using any modern frontend hosting platform, such as:
-Vercel
-Netlify
-Firebase Hosting
-Cloudflare Pages
-To generate a production build:
-npm run build
-Upload the generated build output to your chosen hosting provider.
+✅ Senior experience integration
 
-## Can I connect a custom domain to my Lovable project?
+✅ AI reasoning instead of generic chatbot responses
 
-Yes.
+✅ What-if academic simulations
 
-Custom domains can be configured through the domain management settings of the chosen hosting platform after deployment.
+✅ Placement-oriented guidance
+
+---
+
+# 🚀 Future Scope
+
+* Support AIML, AI-DS and IoT programs
+* Alumni & mentor integration
+* ML-powered recommendation engine
+* College-specific placement analytics
+* Real-time dashboards
+* Voice interaction
+* Multi-language support
+* Secure institutional knowledge storage
+
+---
+
+# 📂 Repository Structure
+
+```
+📦 CSBS-PathFinder
+ ┣ 📂 frontend
+ ┣ 📂 backend
+ ┣ 📂 data
+ ┣ 📂 models
+ ┣ 📂 assets
+ ┣ 📜 app.py
+ ┣ 📜 requirements.txt
+ ┗ 📜 README.md
+```
+
+---
+
+# 📸 Project Screenshots
+
+> Add screenshots here
+
+```
+Home Page
+
+Dashboard
+
+Career Recommendation
+
+What-if Simulator
+
+Chat Assistant
+```
+
+---
+
+# 🎥 Demo
+
+📹 Demo Video
+
+(Add Google Drive / YouTube Link)
+
+---
+
+# ⚙ Installation
+
+```bash
+git clone https://github.com/RithishPK/csbs-path-finder.git
+
+cd csbs-path-finder
+
+pip install -r requirements.txt
+
+python app.py
+```
+
+---
+
+# 🤝 Contributors
+
+| Name         | Role             |
+| ------------ | ---------------- |
+| Renuka R     | Team Lead        |
+| Current Crew | Development Team |
+
+---
+
+# ⭐ Support
+
+If you found this project useful,
+
+⭐ Star the repository
+
+🍴 Fork the project
+
+💡 Share your feedback
+
+---
+
+<p align="center">
+
+### 🚀 Empowering CSBS Students Through AI & Institutional Knowledge
+
+*"Making better decisions today for a stronger career tomorrow."*
+
+</p>
