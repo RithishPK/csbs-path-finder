@@ -237,31 +237,6 @@ Unlike traditional career guidance platforms,
 
 ---
 
-# 📸 Project Screenshots
-
-> Add screenshots here
-
-```
-Home Page
-
-Dashboard
-
-Career Recommendation
-
-What-if Simulator
-
-Chat Assistant
-```
-
----
-
-# 🎥 Demo
-
-📹 Demo Video
-
-(Add Google Drive / YouTube Link)
-
----
 
 # ⚙ Installation
 
