@@ -8,7 +8,6 @@
 ![Gemini](https://img.shields.io/badge/Google-Gemini_API-4285F4?style=for-the-badge\&logo=google)
 ![AI](https://img.shields.io/badge/AI-Powered-success?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
-![License](https://img.shields.io/badge/License-MIT-orange?style=for-the-badge)
 
 </p>
 
